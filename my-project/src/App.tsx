@@ -21,8 +21,9 @@ function App() {
 getData()
   }, [])
      
-  const {data, getData, deleteData, addData, editData, deleteImage}:any = useTodo()
+  const {data, getData, deleteData, addData, editData, deleteImage, addImage}:any = useTodo()
   const [idx,setidx] = useState(null)
+  const [idxImage,setidxImage] = useState(null)
   const {register,handleSubmit,watch, setValue,reset,formState:{errors}} = useForm()
   const onsubmit = (data:any) =>{
 const formData = new FormData()
@@ -58,7 +59,19 @@ const formData = new FormData()
       handleOpenEdit()
       
     }
- 
+ const onSubmit = (data) =>{
+  const formData = new FormData()
+  if (data.images && data.images.length > 0) {
+  for(let i=0;i<data.images.length;i++){
+    formData.append("Images", data.images[i])
+  }
+}
+  addImage({
+    id:idxImage,
+    formData
+  })
+  handleCloseImage()
+ }
   
     const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -67,6 +80,11 @@ const formData = new FormData()
   const [openEdit, setOpenEdit] = React.useState(false);
   const handleOpenEdit = () => setOpenEdit(true);
   const handleCloseEdit = () => setOpenEdit(false);
+
+
+   const [openImage, setOpenImage] = React.useState(false);
+  const handleOpenImage = () => setOpenImage(true);
+  const handleCloseImage = () => setOpenImage(false);
   return (
     <>
     <div className='flex justify-center items-center p-15'>
@@ -96,7 +114,10 @@ variant='outlined'
 >
                 DelImg
               </Button>
-              <Button variant='outlined'>Add Image</Button>
+              <Button onClick={() =>{
+                setidxImage(user.id),
+                handleOpenImage()
+              }} variant='outlined'>Add Image</Button>
               </div>
        
             </div>
@@ -140,6 +161,22 @@ variant='outlined'
    <input multiple {...register("images")}  type="file" />
    <TextField {...register("description")} fullWidth label="User Description" /> <br /> <br /> <br />
    <Button type='submit' fullWidth color='success' variant='contained'>Save</Button>
+    </form>
+
+  </Box>
+</Modal>
+
+
+<Modal
+  open={openImage}
+  onClose={handleCloseImage}
+  aria-labelledby="modal-modal-title"
+  aria-describedby="modal-modal-description"
+>
+  <Box sx={style}>
+    <form onSubmit={handleSubmit(onSubmit)} action="">
+   <input multiple {...register("images")}  type="file" />
+   <Button type='submit'>Save</Button>
     </form>
 
   </Box>

@@ -43,6 +43,14 @@ deleteImage:(async (id:number) =>{
     } catch (error) {
         console.error(error);
     }
-})
+}),
+addImage:(async ({id, formData}) =>{
+    try {
+        await axios.post(`http://37.27.29.18:8001/api/to-dos/${id}/images`, formData)
+        get().getData()
+    } catch (error) {
+        console.error(error);
+    }
+}),
 
 }))
