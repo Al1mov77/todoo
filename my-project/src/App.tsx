@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import './App.css'
 import { useTodo } from './Todo'
-import { Box, Button, Modal, TextField } from '@mui/material';
+import { Box, Button, Checkbox, Modal, TextField } from '@mui/material';
 import { useForm } from 'react-hook-form';
  let apiImg = "http://37.27.29.18:8001/images";
 
@@ -21,7 +21,7 @@ function App() {
 getData()
   }, [])
      
-  const {data, getData, deleteData, addData, editData, deleteImage, addImage}:any = useTodo()
+  const {data, getData, deleteData, addData, editData, deleteImage, addImage, editStatus}:any = useTodo()
   const [idx,setidx] = useState(null)
   const [idxImage,setidxImage] = useState(null)
   const {register,handleSubmit,watch, setValue,reset,formState:{errors}} = useForm()
@@ -96,7 +96,11 @@ const formData = new FormData()
         return <div className='relative rounded-2xl text-center shadow-2xl p-10 w-100 hover:translate-y-[-10px] transition-all duration-300 ease-in-out'>
           <p className='font-bold text-2xl'>{user.name}</p>
           <p className='font-semibold'>{user.age}</p>
-          <p className='font-semibold'>{user.description}</p>
+          <p className='font-semibold'>{user.description}</p> <br /> <br />
+          <div className='flex gap-5 items-center justify-center'>
+                      <Button color={`${user.isComplited ? "success" : "error"}`} variant='contained'>{user.isCompleted ? "Active" : "Inactive"}</Button>
+                      <Checkbox onChange={() => editStatus(user.id)} checked={user.isCompleted} />
+          </div>
           <div className="flex justify-center mb-3">
           {user.images?.map((img) => (
             <div key={img.id}>

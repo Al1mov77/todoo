@@ -52,5 +52,13 @@ addImage:(async ({id, formData}) =>{
         console.error(error);
     }
 }),
+editStatus:(async (id) =>{
+    try {
+        await axios.put(`http://37.27.29.18:8001/completed?id=${id}`)
+        get().getData()
+    } catch (error) {
+        console.error(error);
+    }
+})
 
 }))
